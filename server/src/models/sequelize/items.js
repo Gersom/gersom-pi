@@ -39,5 +39,11 @@ ItemsModel['findAllData'] = () => {
 ItemsModel['findOneData'] = (id) => {
   return ItemsModel.findByPk(id)
 }
+ItemsModel['updateData'] = (id, body) => {
+  return ItemsModel.update(body, { where: {id} })
+}
+ItemsModel['removeData'] = (id) => {
+  return ItemsModel.destroy({ where: {id} })
+}
 
 module.exports = ItemsModel

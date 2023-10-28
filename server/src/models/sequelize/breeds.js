@@ -10,7 +10,7 @@ const schema = {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
-    defaultValue: DataTypes.UUIDV4,
+    defaultValue: DataTypes.UUIDV1,
   },
   image: {
     type: DataTypes.STRING,
@@ -42,6 +42,12 @@ BreedsModel['findAllData'] = () => {
 }
 BreedsModel['findOneData'] = (id) => {
   return BreedsModel.findByPk(id)
+}
+BreedsModel['updateData'] = (id, body) => {
+  return BreedsModel.update(body, { where: {id} })
+}
+BreedsModel['removeData'] = (id) => {
+  return BreedsModel.destroy({ where: {id} })
 }
 
 module.exports = BreedsModel

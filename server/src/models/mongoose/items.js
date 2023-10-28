@@ -33,6 +33,12 @@ ItemsScheme.static('findAllData', () => {
 ItemsScheme.static('findOneData', (id) => {
   return this.findById(id)
 })
+ItemsScheme.static('updateData', (id, body) => {
+  return this.findOneAndUpdate({ _id: id }, body)
+})
+ItemsScheme.static('removeData', (id) => {
+  return this.deleteOne({ _id: id })
+})
 
 const ItemsModel = mongoose.model(name, ItemsScheme)
 

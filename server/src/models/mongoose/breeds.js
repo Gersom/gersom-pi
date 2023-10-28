@@ -37,6 +37,12 @@ BreedsScheme.static('findAllData', () => {
 BreedsScheme.static('findOneData', (id) => {
   return this.findById(id)
 })
+BreedsScheme.static('updateData', (id, body) => {
+  return this.findOneAndUpdate({ _id: id }, body)
+})
+BreedsScheme.static('removeData', (id) => {
+  return this.deleteOne({ _id: id })
+})
 
 const BreedsModel = mongoose.model(name, BreedsScheme)
 

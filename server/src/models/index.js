@@ -1,7 +1,7 @@
-const ENGINE_DB = process.env.ENGINE_DB
+const DB_ENGINE = process.env.DB_ENGINE
 let pathModel = ''
 
-switch (ENGINE_DB) {
+switch (DB_ENGINE) {
   case "postgresql":
     pathModel = 'sequelize'
     break
@@ -9,12 +9,11 @@ switch (ENGINE_DB) {
     pathModel = 'mongoose'
     break
   default:
-    throw new Error("Environment variable 'ENGINE_DB' is not valid.")
+    throw new Error("Environment variable 'DB_ENGINE' is not valid.")
 }
 
 const models = {
-  // itemsModel: require(`./${pathModel}/items`),
   breedsModel: require(`./${pathModel}/breeds`)
 }
 
-export default models
+module.exports = models
