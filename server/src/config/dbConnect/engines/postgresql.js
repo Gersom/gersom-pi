@@ -16,6 +16,9 @@ const dbConnectPostgresql = async () => {
   try {
     await sequelize.authenticate()
     console.log('*** PostgreSQL SUCCESS CONEXION ***');
+
+    console.log('\nModel synchronization:\n');
+    await sequelize.sync();
   } catch (e) {
     console.error('\n*** PostgreSQL ERROR CONEXION ***\n\n', e.message)
   }

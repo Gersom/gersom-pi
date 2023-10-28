@@ -1,13 +1,13 @@
-const ENGINE_DB = process.env.ENGINE_DB
+const DB_ENGINE = process.env.DB_ENGINE
 
 const getProperties = () => {
-  switch (ENGINE_DB) {
+  switch (DB_ENGINE) {
     case "postgresql":
       return { id: 'id' }
     case "mongodb":
       return { id: '_id' }
     default:
-      throw new Error("Environment variable 'ENGINE_DB' is not valid.")
+      throw new Error("Environment variable 'DB_ENGINE' is not valid.")
   }
 }
 

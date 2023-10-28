@@ -1,9 +1,9 @@
 require('dotenv').config()
 
-const ENGINE_DB = process.env.ENGINE_DB || 'mongodb'
+const DB_ENGINE = process.env.DB_ENGINE
 let dbConnect = ()=>null
 
-switch (ENGINE_DB) {
+switch (DB_ENGINE) {
   case "postgresql":
     dbConnect = require("./engines/postgresql")
     break
@@ -11,7 +11,7 @@ switch (ENGINE_DB) {
     dbConnect = require("./engines/mongodb")
     break
   default:
-    throw new Error("Environment variable 'ENGINE_DB' is not valid.")
+    throw new Error("Environment variable 'DB_ENGINE' is not valid.")
 }
 
 module.exports = dbConnect
