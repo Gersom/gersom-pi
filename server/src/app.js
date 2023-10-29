@@ -2,6 +2,8 @@ const express = require("express")
 const middlewares = require("./config/middlewares")
 const listen = require("./config/listen")
 const { dbConnect } = require("./config/dbConnect")
+const insertBreeds = require("./services/database/insertBreeds")
+const insertTemperaments = require("./services/database/insertTemperaments")
 
 const app = express()
 
@@ -23,4 +25,11 @@ app.use((_, res) => {
 listen(app, () => {
   // Database conexion
   dbConnect()
+
+  // Register or Updater Temperaments from API
+  // temperamentsFromAPI()
+
+  // insert Breeds into Database.
+  insertBreeds()
+  insertTemperaments()
 })

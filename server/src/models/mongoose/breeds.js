@@ -43,6 +43,13 @@ BreedsScheme.static('updateData', (id, body) => {
 BreedsScheme.static('removeData', (id) => {
   return this.deleteOne({ _id: id })
 })
+BreedsScheme.static('createMany', (data = []) => {
+  return this.insertMany(data, { ordered: false })
+})
+BreedsScheme.static('dataExist', async () => {
+  const amountData = await this.countDocuments()
+  return amountData > 0
+})
 
 const BreedsModel = mongoose.model(name, BreedsScheme)
 

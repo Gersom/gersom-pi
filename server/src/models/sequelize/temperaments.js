@@ -15,6 +15,7 @@ const schema = {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true
   }
 }
 
@@ -32,6 +33,9 @@ TemperamentsModel['updateData'] = (id, body) => {
 }
 TemperamentsModel['removeData'] = (id) => {
   return TemperamentsModel.destroy({ where: {id} })
+}
+TemperamentsModel['createMany'] = (data = []) => {
+  return TemperamentsModel.bulkCreate(data, { ignoreDuplicates: true })
 }
 
 module.exports = TemperamentsModel

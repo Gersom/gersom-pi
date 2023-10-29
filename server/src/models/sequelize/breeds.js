@@ -54,6 +54,13 @@ BreedsModel['updateData'] = (id, body) => {
 BreedsModel['removeData'] = (id) => {
   return BreedsModel.destroy({ where: {id} })
 }
+BreedsModel['createMany'] = (data = []) => {
+  return BreedsModel.bulkCreate(data, { ignoreDuplicates: true })
+}
+BreedsModel['dataExist'] = async () => {
+  const amountData = await BreedsModel.count()
+  return amountData > 0
+}
 
 module.exports = BreedsModel
 

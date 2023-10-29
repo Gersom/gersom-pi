@@ -1,13 +1,13 @@
 const { temperamentsModel } = require("../models")
 
 const getAllTsController = async () => {
-  const breeds = await temperamentsModel.findAllData()
-  return breeds
+  const temperaments = await temperamentsModel.findAllData()
+  return temperaments
 }
 
 const getTController = async (id) => {
-  const breed = await temperamentsModel.findOneData(id)
-  return breed
+  const temperament = await temperamentsModel.findOneData(id)
+  return temperament
 };
 
 const postTController = async (data) => {

@@ -27,6 +27,9 @@ TemperamentsScheme.static('updateData', (id, body) => {
 TemperamentsScheme.static('removeData', (id) => {
   return this.deleteOne({ _id: id })
 })
+BreedsScheme.static('createMany', (data = []) => {
+  return this.insertMany(data, { ordered: false })
+})
 
 const TemperamentsModel = mongoose.model(name, TemperamentsScheme)
 
