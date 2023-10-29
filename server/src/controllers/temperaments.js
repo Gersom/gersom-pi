@@ -1,29 +1,29 @@
-const { TemperamentsModel } = require("../models")
+const { temperamentsModel } = require("../models")
 
 const getAllTsController = async () => {
-  const breeds = await TemperamentsModel.findAllData()
+  const breeds = await temperamentsModel.findAllData()
   return breeds
 }
 
 const getTController = async (id) => {
-  const breed = await TemperamentsModel.findOneData(id)
+  const breed = await temperamentsModel.findOneData(id)
   return breed
 };
 
 const postTController = async (data) => {
-  await TemperamentsModel.create(data)
+  await temperamentsModel.create(data)
   return {
     success: 'breed data was saved correctly.'
   }
 }
 const updateTController = async (id, data) => {
-  await TemperamentsModel.updateData(id, data)
+  await temperamentsModel.updateData(id, data)
   return {
     success: 'breed data was update correctly.'
   }
 }
 const deleteTController = async (id, data) => {
-  await TemperamentsModel.removeData(id)
+  await temperamentsModel.removeData(id)
   return {
     success: 'breed data was update correctly.'
   }

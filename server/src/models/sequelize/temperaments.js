@@ -1,4 +1,4 @@
-const {DataTypes} = require("sequelize")
+const { DataTypes } = require("sequelize")
 const { sequelize } = require("../../config/dbConnect/engines/postgresql")
 
 const name = 'temperaments'
@@ -20,7 +20,7 @@ const schema = {
 
 const TemperamentsModel = sequelize.define(name, schema, config)
 
-// add static methods (functions) to model
+// Add static methods (functions) to model
 TemperamentsModel['findAllData'] = () => {
   return TemperamentsModel.findAll()
 }
