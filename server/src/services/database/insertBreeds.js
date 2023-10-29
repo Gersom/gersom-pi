@@ -26,8 +26,9 @@ const insertBreeds = async () => {
     } else {
       console.log(`- 0 ${message}`)
     }
-  } catch (error) {
-    throw Error('ERROR: insert data into Breeds.')
+  } catch (err) {
+    console.log('ERROR: insert data into Breeds.\n')
+    throw Error(err.message)
   }
 }
 

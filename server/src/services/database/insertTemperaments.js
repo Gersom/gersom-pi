@@ -6,25 +6,29 @@ const insertTemperaments = async () => {
   try {
     const breeds = await getBreedsDogAPI()
     let tempsDogAPI = getUniqueTemperaments(breeds)
+    tempsDogAPI = tempsDogAPI.map((temp) => ({ name: temp }))
     
-    let tempsDB = await temperamentsModel.findAllData()
-    tempsDB = tempsDB.map(obj => obj.name)
     let amounttemps = []
+    let tempsDB = await temperamentsModel.findAllData()
+
     if (tempsDB.length === 0) {
-      tempsDogAPI = tempsDogAPI.map((temp) => ({ name: temp }))
       amounttemps = await temperamentsModel.createMany(tempsDogAPI)
-    } else {
-      tempsDogAPI = tempsDogAPI.filter(temp => !tempsDB.includes(temp))
+    } 
+    else {
+      tempsDB = tempsDB.map(obj => obj.name)
+      tempsDogAPI = tempsDogAPI.filter((temp) => {
+        return !tempsDB.includes(temp.name)
+      })
+      
       if (tempsDogAPI.length > 0) {
-        tempsDogAPI = tempsDogAPI.map((temp) => ({ name: temp }))
         amounttemps = await temperamentsModel.createMany(tempsDogAPI)
       }
     }
     
     console.log(`- ${amounttemps.length} Temperaments data inserted into the database.`)
   } catch (err) {
+    console.log('ERROR: insert data into Temperaments.\n')
     throw Error(err.message)
-    // throw Error('ERROR: insert data into Temperaments.')
   }
 }
 
