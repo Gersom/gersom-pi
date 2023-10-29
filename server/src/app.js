@@ -25,11 +25,9 @@ app.use((_, res) => {
 listen(app, () => {
   // Database conexion
   dbConnect()
-
-  // Register or Updater Temperaments from API
-  // temperamentsFromAPI()
-
-  // insert Breeds into Database.
+  
+  // Insert o not Breeds into Database.
   insertBreeds()
+  // Register or Updater Temperaments from API
   insertTemperaments()
 })

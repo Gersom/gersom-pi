@@ -1,11 +1,8 @@
-// const cors = require("cors")
 const express = require("express")
 
 // MIDDLEWARES
 const middlewares = (app) => {
-  // app.use(cors())
   app.use(express.json())
-  // app.use('/files', express.static(__dirname + '/storage'));
   app.use((_, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", "true");
