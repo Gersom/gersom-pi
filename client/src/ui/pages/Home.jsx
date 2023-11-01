@@ -8,7 +8,7 @@ const Home = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getAllDogs())
+    dispatch(getAllDogs(1))
   }, [dispatch])
 
   return (
