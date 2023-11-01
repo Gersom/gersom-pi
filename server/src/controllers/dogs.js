@@ -1,3 +1,9 @@
+require('dotenv').config()
+
+const portEnv = process.env.PORT || 3000
+const hostEnv = process.env.HOST || 'http://localhost'
+const urlEnv = `${hostEnv}:${portEnv}`
+
 const { breedsModel, temperamentsModel } = require("../models")
 const getBreedsDogApi = require("../services/theDogAPI/getAllBreeds")
 const getBreedDogApi = require("../services/theDogAPI/getBreed")
@@ -11,11 +17,33 @@ const {
   getBreedController
 } = require("./breeds")
 
-const getAllDogsController = async () => {
+const getAllDogsController = async (page = 1) => {
   const breedsDB = await getAllBreedsController()
+
   let breedsDogApi = await getBreedsDogApi()
   breedsDogApi = normalizeBreeds(breedsDogApi)
-  return [...breedsDB, ...breedsDogApi]
+  
+  const allBreeds = [...breedsDB, ...breedsDogApi]
+
+  const parts = 8
+  const initialIndex = parts * (page-1)
+
+  const pagesTotal = Math.ceil(allBreeds.length / parts)
+  const pageNext = (page+1) <= pagesTotal ? page+1 : null
+  const pagePrev = (page-1) >= 1 ? page-1 : null
+  const urllAll = `${urlEnv}/api/dogs?page=`
+
+  return {
+    info: {
+      currentPage: page,
+      pages: pagesTotal,
+      count: allBreeds.length,
+      next: pageNext ? urllAll+pageNext : null,
+      prev: pagePrev ? urllAll+pagePrev : null,
+      author: 'Gersom'
+   },
+    results: allBreeds.slice(initialIndex, initialIndex+parts)
+  }
 }
 
 const getDogController = async (id) => { 

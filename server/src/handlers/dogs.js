@@ -8,9 +8,13 @@ const {
 } = require("../controllers/dogs")
 
 // READ ITEMS
-const getAllDogs = async (_, res) => {
+const getAllDogs = async (req, res) => {
   try {
-    const dogs = await getAllDogsController()
+    let page = parseInt(req.query.page)
+    if(!isNaN(page)) page = page < 1 ? 1 : page
+    else page = 1
+
+    const dogs = await getAllDogsController(page)
     res.status(200).json(dogs)
   }
   catch (error) {
