@@ -18,7 +18,10 @@ import {
 } from "react-router-dom";
 
 // Imports Pages
+import Start from "./pages/Start";
 import Home from "./pages/Home";
+import Detail from "./pages/Detail";
+import Create from "./pages/Create";
 import NotFound from "./pages/NotFound";
 
 // Imports Components
@@ -38,10 +41,28 @@ function App() {
 
   const AllRoutes = (
     <Routes>
+      {/* Start */}
+      <Route 
+        path={routerNames['start']}
+        element={ <Start /> }
+      />
+
       {/* Home */}
       <Route 
         path={routerNames['home']}
         element={ <Home /> }
+      />
+
+      {/* Detail */}
+      <Route 
+        path={`${routerNames['detail']}/:id`}
+        element={ <Detail /> }
+      />
+
+      {/* Create */}
+      <Route 
+        path={routerNames['create']}
+        element={ <Create /> }
       />
 
       {/* Not Found 404 */}

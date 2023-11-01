@@ -1,6 +1,8 @@
 const routerNames = {
-  home: '/',
-  about: '/about',
+  start: '/',
+  home: '/breeds',
+  detail: '/breeds',
+  create: '/create/',
 }
 
 export default routerNames
