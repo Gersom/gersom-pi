@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Sequelize } = require('sequelize');
 const { sequelize } = require("../../config/dbConnect/engines/postgresql")
 const TemperamentsModel = require(`./temperaments`)
 
@@ -12,6 +12,10 @@ const schema = {
     type: DataTypes.UUID,
     primaryKey: true,
     defaultValue: DataTypes.UUIDV1,
+  },
+  source: {
+    type: DataTypes.STRING,
+    defaultValue: 'database',
   },
   image: {
     type: DataTypes.STRING,
@@ -61,6 +65,16 @@ BreedsModel['dataExist'] = async () => {
   const amountData = await BreedsModel.count()
   return amountData > 0
 }
+BreedsModel['findByPartial'] = (key, value) => {
+  return BreedsModel.findAll({
+    where: {
+      [key]: {
+        [Sequelize.Op.like]: `%${value}%`
+      }
+    }
+  });
+}
+
 
 module.exports = BreedsModel
 

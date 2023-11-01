@@ -1,4 +1,4 @@
-const getBreedsDogAPI = require("../theDogAPI/getBreeds")
+const getBreedsDogAPI = require("../theDogAPI/getAllBreeds")
 const getUniqueTemperaments = require("../../utils/getUniqueTemperaments")
 const { temperamentsModel } = require('../../models')
 

@@ -1,7 +1,6 @@
 const instanceAPI = require("./instanceAPI")
 
-// const temperamentsFromAPI = async () => {
-const getBreedsData = async () => {
+const getAllBreeds = async () => {
   try {
     const response = await instanceAPI({
       method: 'get',
@@ -13,4 +12,4 @@ const getBreedsData = async () => {
   }
 }
 
-module.exports = getBreedsData
+module.exports = getAllBreeds

@@ -22,12 +22,12 @@ app.use((_, res) => {
 });
 
 // LISTEN
-listen(app, () => {
+listen(app, async () => {
   // Database conexion
-  dbConnect()
+  await dbConnect()
   
   // Insert o not Breeds into Database.
-  insertBreeds()
+  await insertBreeds()
   // Register or Updater Temperaments from API
-  insertTemperaments()
+  await insertTemperaments()
 })
