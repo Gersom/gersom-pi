@@ -1,4 +1,4 @@
-const { breedsModel } = require("../models")
+const { breedsModel, temperamentsModel } = require("../models")
 const getBreedsDogApi = require("../services/theDogAPI/getAllBreeds")
 const getBreedDogApi = require("../services/theDogAPI/getBreed")
 const getBreedsName = require("../services/theDogAPI/getBreedsName")
@@ -36,8 +36,10 @@ const getDogController = async (id) => {
   return {}
 }
 
-const getDogNameController = async (name) => {
-  const breedsDB = await breedsModel.findByPartial('name', name)
+const getDogsNameController = async (name) => {
+  const breedsDB = await breedsModel.findByPartial(
+    'name', name.toLowerCase()
+  )
   let breedsDogApi = await getBreedsName(name)
   breedsDogApi = normalizeBreeds(breedsDogApi)
 
@@ -45,17 +47,34 @@ const getDogNameController = async (name) => {
 }
 
 const postDogController = async (data) => {
-  // await breedsModel.create(data)
-  // return {
-  //   success: 'breed data was saved correctly.'
-  // }
+  const {temperaments,...body} = data
+  let tempsDB = []
+
+  for (const temperamentId of temperaments) {
+    const tempDB = await temperamentsModel.findOneData(temperamentId)
+    if(tempDB==null){
+      throw Error(`Temperament ID incorrect: ${temperamentId}`)
+    }
+    tempsDB.push(tempDB)
+  }
+  const newDog = await breedsModel.create(body)
+  
+  for (const temp of tempsDB) {
+    await newDog.addTemperaments(temp);
+  }
+
+  return {
+    success: 'breed data was saved correctly.'
+  }
 }
+
 const updateDogController = async (id, data) => {
   // await breedsModel.updateData(id, data)
   // return {
   //   success: 'breed data was update correctly.'
   // }
 }
+
 const deleteDogController = async (id, data) => {
   // await breedsModel.removeData(id)
   // return {
@@ -66,7 +85,7 @@ const deleteDogController = async (id, data) => {
 module.exports = {
   getAllDogsController,
   getDogController,
-  getDogNameController,
+  getDogsNameController,
   postDogController,
   updateDogController,
   deleteDogController

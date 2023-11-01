@@ -1,7 +1,7 @@
 const {
   getAllDogsController,
   getDogController,
-  getDogNameController,
+  getDogsNameController,
   postDogController,
   updateDogController,
   deleteDogController
@@ -33,15 +33,19 @@ const getDog = async (req, res) => {
 // SEARCH FOR NAME
 const getDogName = async (req, res) => {
   const name = req.query.search
-  if(!name) return (
+  if(!name) {
     res.status(400).json({error: 'Name is missing'})
-  )
-  try {
-    const dog = await getDogNameController(name)
-    res.status(200).json(dog);
-  }
-  catch (error) {
-    res.status(500).json({error: error.message})
+  } else {
+    try {
+      const dogs = await getDogsNameController(name)
+      if(dogs.length===0) res.status(404).json({
+        error: "There are no dogs with that name."
+      })
+      else res.status(200).json(dogs);
+    }
+    catch (error) {
+      res.status(500).json({error: error.message})
+    }
   }
 }
 
