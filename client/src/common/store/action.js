@@ -1,7 +1,13 @@
+import axios from "axios"
+
+import {
+  API_URL_DOGS
+} from "~common/constants/api"
+
 import { 
   ACTIVE_LOADING,
   DISABLED_LOADING,
-  ADD_ITEM,
+  GET_ALL_DOGS,
 } from "./types"
 
 export const activateLoading = () => {
@@ -10,9 +16,18 @@ export const activateLoading = () => {
 export const disabledLoading = () => {
   return { type: DISABLED_LOADING }
 }
-export const addNewItem = (newItem) => {
-  return { 
-    type: ADD_ITEM, 
-    payload: newItem 
+
+export const getAllDogs = () => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios({
+        method: 'get',
+        url: API_URL_DOGS,
+      })
+      return dispatch({ type: GET_ALL_DOGS, payload: data })
+    } 
+    catch (error) {
+      console.error(error)
+    }
   }
 }

@@ -1,7 +1,7 @@
 // State
 const initialState = {
   loading: false,
-  items: [],
+  dogs: [],
 }
 
 export default initialState
