@@ -1,33 +1,35 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-const SearchBar = () => {
+const SearchBar = ({
+  titleName='', onSearch= ()=>null, onNull= ()=>null
+}) => {
   const [textSearch, setTextSearch] = useState('');
   
-
   const handleChange = (value) => {
     setTextSearch(value)
   }
 
-  const onSearch = () => {
-    console.log('Clic Search Button')
-
-  }
+  useEffect(() => {
+    onNull()
+  }, [onNull, textSearch])
 
   return (
     <div className="c-search">
+      <h3 className='c-search__title'>
+        {titleName}</h3>
 
       <input
         id="input-search"
         placeholder='Buscar'
-        className="search__input"
+        className="c-search__input"
         value={textSearch}
         onChange={e => handleChange(e.target.value)}
         type='search' />
       
 
       <button 
-        className="search__button" 
-        onClick={onSearch}
+        className="c-search__button" 
+        onClick={() => onSearch(textSearch)}
       >
         Buscar</button>
 

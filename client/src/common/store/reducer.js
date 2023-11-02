@@ -2,6 +2,8 @@
 import { 
   ACTIVE_LOADING,
   DISABLED_LOADING,
+  PAGE_CHANGE,
+  SEARCH_CHANGE,
   GET_DOGS,
 } from "./types"
 import initialState from "./state"
@@ -18,6 +20,18 @@ const reducer = (state= initialState, { type, payload }) => {
       return {
         ...state, loading: false
       }
+
+    case PAGE_CHANGE:
+      return {
+        ...state,
+        currentPage: payload
+      }
+
+    case SEARCH_CHANGE:
+        return {
+          ...state,
+          searchText: payload
+        }
 
     case GET_DOGS:
       return { 

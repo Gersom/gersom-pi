@@ -1,3 +1,5 @@
 export const ACTIVE_LOADING = 'ACTIVE_LOADING'
 export const DISABLED_LOADING = 'DISABLED_LOADING'
 export const GET_DOGS = 'GET_DOGS'
+export const PAGE_CHANGE = 'PAGE_CHANGE'
+export const SEARCH_CHANGE = 'SEARCH_CHANGE'

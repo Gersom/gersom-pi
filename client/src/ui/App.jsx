@@ -34,9 +34,9 @@ function App() {
   )
 
   useEffect(() => {
-    setTimeout(function() {
-      dispatch(activateLoading())
-    }, 1000)
+    dispatch(activateLoading())
+    // setTimeout(function() {
+    // }, 1000)
   }, [dispatch])
 
   const AllRoutes = (
