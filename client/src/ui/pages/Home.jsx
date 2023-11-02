@@ -4,9 +4,15 @@ import {
   useDispatch
 } from "react-redux";
 import {getAllDogs} from "~common/store/action"
+import Cards from "~components/Cards"
+import Pagination from "~src/ui/components/Pagination"
+
 const Home = () => {
   const dispatch = useDispatch()
   const [pageLoading, setpageLoading] = useState(true)
+  const dogsData = useSelector(
+    (state) => state.dogs
+  )
   const currentPage = useSelector(
     (state) => state.currentPage
   )
@@ -41,42 +47,25 @@ const Home = () => {
     setpageLoading(false)
   }, [currentPage])
 
-  
-  const pagination = (
-    <div className='pagination'>
-      <button 
-      onClick={() => handlePage(1)}
-      disabled={currentPage===1}>
-        &#60;|</button>
-      <button 
-      onClick={() => handlePage(currentPage - 1)}
-      disabled={currentPage===1}>
-        &#60;</button>
-
-      <p className='pagination__text'>
-        Page {currentPage} de {totalPage}</p>
-
-      <button 
-      onClick={() => handlePage(currentPage + 1)}
-      disabled={currentPage===totalPage}>
-        &#62;</button>
-      <button 
-      onClick={() => handlePage(totalPage)}
-      disabled={currentPage===totalPage}>
-        |&#62;</button>
-    </div>
-  )
-
   return (
     <div className='Home'>
       <h2>Home</h2>
       {
         pageLoading 
         ? <p>Page loading...</p> 
-        : pagination
+        : <div>
+          <Pagination 
+          prevAll={() => handlePage(1)}
+          prev={() => handlePage(currentPage - 1)}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          next={() => handlePage(currentPage + 1)}
+          nextAll={() => handlePage(totalPage)}
+          />
+          <Cards cards={dogsData} />
+        </div>
       }
     </div>
-      
   );
 };
 

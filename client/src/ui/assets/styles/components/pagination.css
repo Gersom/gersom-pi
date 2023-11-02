@@ -1,0 +1,9 @@
+.c-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.c-pagination .c-pagination__text {
+  margin: 0 15px;
+}

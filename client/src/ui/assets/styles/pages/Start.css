@@ -1,0 +1,23 @@
+.Start {
+  overflow: hidden;
+}
+.Start__background {
+  position: absolute;
+  height: 100vh;
+  left: -23px;
+  margin: 0;
+  overflow: hidden;
+  top: 0;
+  width: calc(100vw + 1rem);
+  z-index: 0;
+}
+.Start__background img {
+  display: block;
+  height: auto;
+  width: 100%;
+  opacity: .1;
+}
+.Start__image {
+  position: relative;
+  z-index: 2;
+}
