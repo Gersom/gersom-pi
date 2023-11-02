@@ -1,4 +1,4 @@
-const normalizeBreed = (breed) => {
+const normalizeBreedDogAPI = (breed) => {
   breed.image = breed?.image?.url
   breed.height = breed?.height?.metric
   breed.weight = breed?.weight?.metric
@@ -6,15 +6,15 @@ const normalizeBreed = (breed) => {
   return breed
 }
 
-const normalizeBreeds = (breeds) => {
+const normalizeBreedsDogAPI = (breeds) => {
   breeds = breeds.map(breed => {
-    return normalizeBreed(breed)
+    return normalizeBreedDogAPI(breed)
   })
   return breeds
 }
 
 
 module.exports = {
-  normalizeBreed,
-  normalizeBreeds,
+  normalizeBreedDogAPI,
+  normalizeBreedsDogAPI,
 }

@@ -9,19 +9,23 @@ const getBreedsDogApi = require("../services/theDogAPI/getAllBreeds")
 const getBreedDogApi = require("../services/theDogAPI/getBreed")
 const getBreedsName = require("../services/theDogAPI/getBreedsName")
 const {
-  normalizeBreed,
-  normalizeBreeds,
+  normalizeBreedDogAPI,
+  normalizeBreedsDogAPI,
 } = require("../services/theDogAPI/normalizeBreeds")
+const {
+  normalizeBreedsDB,
+} = require("../services/database/normalizeBreeds")
 const {
   getAllBreedsController,
   getBreedController
 } = require("./breeds")
 
 const getAllDogsController = async (page = 1) => {
-  const breedsDB = await getAllBreedsController()
+  let breedsDB = await getAllBreedsController()
+  breedsDB = await normalizeBreedsDB(breedsDB)
 
   let breedsDogApi = await getBreedsDogApi()
-  breedsDogApi = normalizeBreeds(breedsDogApi)
+  breedsDogApi = normalizeBreedsDogAPI(breedsDogApi)
   
   const allBreeds = [...breedsDB, ...breedsDogApi]
 
@@ -49,7 +53,7 @@ const getAllDogsController = async (page = 1) => {
 const getDogController = async (id) => { 
   const breedDogApi = await getBreedDogApi(id)
   if (Object.keys(breedDogApi).length !== 0) {
-    return normalizeBreed(breedDogApi)
+    return normalizeBreedDogAPI(breedDogApi)
   }
 
   try {
@@ -69,7 +73,7 @@ const getDogsNameController = async (name) => {
     'name', name.toLowerCase()
   )
   let breedsDogApi = await getBreedsName(name)
-  breedsDogApi = normalizeBreeds(breedsDogApi)
+  breedsDogApi = normalizeBreedsDogAPI(breedsDogApi)
 
   return [...breedsDB,...breedsDogApi]
 }

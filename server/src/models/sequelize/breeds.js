@@ -47,7 +47,14 @@ TemperamentsModel.belongsToMany(BreedsModel, { through: 'breeds_temperaments' })
 
 // Add static methods (functions) to model
 BreedsModel['findAllData'] = () => {
-  return BreedsModel.findAll()
+  return BreedsModel.findAll({
+    include: [
+      {
+        model: TemperamentsModel,
+        attributes: ['name']
+      }
+    ]
+  })
 }
 BreedsModel['findOneData'] = (id) => {
   return BreedsModel.findByPk(id)
