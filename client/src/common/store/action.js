@@ -7,7 +7,7 @@ import {
 import { 
   ACTIVE_LOADING,
   DISABLED_LOADING,
-  GET_ALL_DOGS,
+  GET_DOGS,
 } from "./types"
 
 export const activateLoading = () => {
@@ -25,7 +25,7 @@ export const getAllDogs = (page= 1) => {
         url: API_URL_DOGS,
         params: { page }
       })
-      return dispatch({ type: GET_ALL_DOGS, payload: data })
+      return dispatch({ type: GET_DOGS, payload: data })
     } 
     catch (error) {
       console.error(error)

@@ -2,7 +2,7 @@
 import { 
   ACTIVE_LOADING,
   DISABLED_LOADING,
-  GET_ALL_DOGS,
+  GET_DOGS,
 } from "./types"
 import initialState from "./state"
 
@@ -19,8 +19,13 @@ const reducer = (state= initialState, { type, payload }) => {
         ...state, loading: false
       }
 
-    case GET_ALL_DOGS:
-      return { ...state, dogs: payload }
+    case GET_DOGS:
+      return { 
+        ...state, 
+        dogs: payload.results,
+        currentPage: payload?.info?.currentPage,
+        totalPage: payload?.info?.pages,
+      }
 
     // case ADD_ITEM:
     //   return {
