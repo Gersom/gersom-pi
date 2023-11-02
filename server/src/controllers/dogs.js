@@ -68,14 +68,36 @@ const getDogController = async (id) => {
   return {}
 }
 
-const getDogsNameController = async (name) => {
-  const breedsDB = await breedsModel.findByPartial(
+const getDogsNameController = async (name, page=1) => {
+  let breedsDB = await breedsModel.findByPartial(
     'name', name.toLowerCase()
   )
+  breedsDB = await normalizeBreedsDB(breedsDB)
+
   let breedsDogApi = await getBreedsName(name)
   breedsDogApi = normalizeBreedsDogAPI(breedsDogApi)
 
-  return [...breedsDB,...breedsDogApi]
+  const allBreeds = [...breedsDB,...breedsDogApi]
+
+  const parts = 8
+  const initialIndex = parts * (page-1)
+
+  const pagesTotal = Math.ceil(allBreeds.length / parts)
+  const pageNext = (page+1) <= pagesTotal ? page+1 : null
+  const pagePrev = (page-1) >= 1 ? page-1 : null
+  const urllAll = `${urlEnv}/api/dogs?page=`
+
+  return {
+    info: {
+      currentPage: page,
+      pages: pagesTotal,
+      count: allBreeds.length,
+      next: pageNext ? urllAll+pageNext : null,
+      prev: pagePrev ? urllAll+pagePrev : null,
+      author: 'Gersom'
+   },
+    results: allBreeds.slice(initialIndex, initialIndex+parts)
+  }
 }
 
 const postDogController = async (data) => {

@@ -36,12 +36,16 @@ const getDog = async (req, res) => {
 
 // SEARCH FOR NAME
 const getDogName = async (req, res) => {
+  let page = parseInt(req.query.page)
+  if(!isNaN(page)) page = page < 1 ? 1 : page
+  else page = 1
+
   const name = req.query.search
   if(!name) {
     res.status(400).json({error: 'Name is missing'})
   } else {
     try {
-      const dogs = await getDogsNameController(name)
+      const dogs = await getDogsNameController(name, page)
       if(dogs.length===0) res.status(404).json({
         error: "There are no dogs with that name."
       })

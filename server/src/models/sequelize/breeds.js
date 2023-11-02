@@ -78,7 +78,13 @@ BreedsModel['findByPartial'] = (key, value) => {
       [key]: {
         [Sequelize.Op.like]: `%${value}%`
       }
-    }
+    },
+    include: [
+      {
+        model: TemperamentsModel,
+        attributes: ['name'],
+      }
+    ]
   });
 }
 
