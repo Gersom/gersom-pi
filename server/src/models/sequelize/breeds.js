@@ -51,7 +51,7 @@ BreedsModel['findAllData'] = () => {
     include: [
       {
         model: TemperamentsModel,
-        attributes: ['name']
+        attributes: ['name'],
       }
     ]
   })

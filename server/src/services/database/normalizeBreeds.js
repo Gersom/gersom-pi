@@ -7,7 +7,8 @@ const normalizeBreedDB = (breed) => {
     return temp.charAt(0).toUpperCase() + temp.slice(1)
   }).join(', ')
   
-  breed.temperaments = temperaments
+  breed.temperament = temperaments
+  delete breed.temperaments;
   
   return breed
 }
