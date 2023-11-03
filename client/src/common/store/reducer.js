@@ -6,7 +6,9 @@ import {
   GET_TEMPERAMENTS,
   PAGE_CHANGE,
   DOG_NAME_CHANGE,
-  TEMPERAMENT_NAME_CHANGE
+  TEMPERAMENT_NAME_CHANGE,
+  ORIGIN_FILTER,
+  RESET_FILTER
 } from "./types"
 import initialState from "./state"
 import paramsObject from "./../utils/generateParamsObject"
@@ -44,7 +46,8 @@ const reducer = (state= initialState, { type, payload }) => {
         params: paramsObject(
           state.dogNameSearch,
           state.temperamentNameSearch,
-          payload
+          payload,
+          state.originSearch
         ),
         currentPage: payload
       }
@@ -55,7 +58,8 @@ const reducer = (state= initialState, { type, payload }) => {
         params: paramsObject(
           payload,
           state.temperamentNameSearch,
-          state.currentPage
+          state.currentPage,
+          state.originSearch
         ),
         dogNameSearch: payload
       }
@@ -65,14 +69,28 @@ const reducer = (state= initialState, { type, payload }) => {
         params: paramsObject(
           state.dogNameSearch,
           payload,
-          state.currentPage
+          state.currentPage,
+          state.originSearch
         ),
         temperamentNameSearch: payload
       }
-
+    case ORIGIN_FILTER:
+      return {
+        ...state,
+        params: paramsObject(
+          state.dogNameSearch,
+          state.temperamentNameSearch,
+          state.currentPage,
+          payload
+        ),
+        originSearch: payload
+      }
     
-
-    
+    case RESET_FILTER:
+      return {
+        ...state,
+        dogs: state.allDogs
+      }    
 
     default:
       return {...state}

@@ -1,11 +1,14 @@
 const Filters = ({
   itemsList= [],
   onTemperament= ()=>null,
-  currentValue
+  onOrigin= ()=>null,
+  tempValue,
+  originValue
 }) => {
   return (
     <div className='c-filters'>
-      <select onChange={onTemperament} value={currentValue} name="select">
+      <span>Temperamentos: </span>
+      <select onChange={onTemperament} value={tempValue} name="select">
         <option value={''}>
           Ninguno
         </option>
@@ -16,6 +19,18 @@ const Filters = ({
             </option>
           ))
         }
+      </select>
+      <span>Origen: </span>
+      <select onChange={onOrigin} value={originValue} name="select">
+        <option value={''}>
+          Ninguno
+        </option>
+        <option value={'database'}>
+          Base de datos
+        </option>
+        <option value={'dogapi'}>
+          The Dog Api
+        </option>
       </select>
     </div>
   );

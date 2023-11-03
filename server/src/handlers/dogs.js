@@ -12,12 +12,13 @@ const getAllDogs = async (req, res) => {
   try {
     const dogName = req.query.name
     const temperamentName = req.query.temperament
+    const source = req.query.origin
     let page = parseInt(req.query.page)
     if(!isNaN(page)) page = page < 1 ? 1 : page
     else page = 1
 
     const dogs = await getAllDogsController({
-      dogName, temperamentName, page
+      dogName, temperamentName, page, source
     })
     res.status(200).json(dogs)
   }

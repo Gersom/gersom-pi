@@ -8,7 +8,8 @@ import {
   getAllTemperaments, 
   pageChange,
   dogNameChange,
-  temperamentNameChange
+  temperamentNameChange,
+  originFilter
 } from "~common/store/action"
 import Cards from "~components/Cards"
 import Pagination from "~src/ui/components/Pagination"
@@ -18,7 +19,8 @@ import Filters from "~src/ui/components/Filters"
 const Home = () => {
   const dispatch = useDispatch()
   const [pageLoading, setpageLoading] = useState(true)
-  const [currentValue, setCurrentValue] = useState('')
+  const [tempValue, setTempValue] = useState('')
+  const [originValue, setOriginValue] = useState('')
   const paramsState = useSelector(
     (state) => state.params
   )
@@ -64,7 +66,12 @@ const Home = () => {
     const tempName = event.target.value
     setpageLoading(true)
     dispatch(temperamentNameChange(tempName))
-    setCurrentValue(tempName)
+    setTempValue(tempName)
+  }
+  const handleOrigin = (event) => {
+    const origin = event.target.value
+    setOriginValue(origin)
+    dispatch(originFilter(origin))
   }
 
   useEffect(() => {
@@ -91,9 +98,11 @@ const Home = () => {
         ? <p>Page loading...</p> 
         : <div>
           <Filters 
-          currentValue={currentValue}
+          tempValue={tempValue}
+          originValue={originValue}
           itemsList={temperamentsState} 
-          onTemperament={handleTemperament} />
+          onTemperament={handleTemperament}
+          onOrigin={handleOrigin} />
 
           <Pagination 
           prevAll={() => handlePage(1)}

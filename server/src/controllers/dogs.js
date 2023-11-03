@@ -17,22 +17,42 @@ const formatResponse = require("../utils/formatResponse")
 const filterByTemperament = require("../utils/filterByTemperament")
 
 const getAllDogsController = async ({
-  dogName, temperamentName, page
+  dogName, temperamentName, page, source
 }) => {
-  let breedsDB
-  let breedsDogApi
+  let breedsDB = []
+  let breedsDogApi = []
   
-  if (dogName === undefined) {
-    breedsDB = await getAllBreedsController()
-    breedsDogApi = await getBreedsDogApi()
-  } else {
-    breedsDB = await breedsModel.findByPartial(
-      'name', dogName.toLowerCase()
-    )
-    breedsDogApi = await getBreedsName(dogName)
+  if(source==='database') {
+    if (dogName === undefined) {
+      breedsDB = await getAllBreedsController()
+    } else {
+      breedsDB = await breedsModel.findByPartial(
+        'name', dogName.toLowerCase()
+      )
+    }
+    breedsDB = await normalizeBreedsDB(breedsDB)
   }
-  breedsDB = await normalizeBreedsDB(breedsDB)
-  breedsDogApi = await normalizeBreedsDogAPI(breedsDogApi)
+  else if (source === 'dogapi') {
+    if (dogName === undefined) {
+      breedsDogApi = await getBreedsDogApi()
+    } else {
+      breedsDogApi = await getBreedsName(dogName)
+    }
+    breedsDogApi = await normalizeBreedsDogAPI(breedsDogApi)
+  }
+  else {
+    if (dogName === undefined) {
+      breedsDB = await getAllBreedsController()
+      breedsDogApi = await getBreedsDogApi()
+    } else {
+      breedsDB = await breedsModel.findByPartial(
+        'name', dogName.toLowerCase()
+      )
+      breedsDogApi = await getBreedsName(dogName)
+    }
+    breedsDB = await normalizeBreedsDB(breedsDB)
+    breedsDogApi = await normalizeBreedsDogAPI(breedsDogApi)
+  }
 
   let allBreeds = [...breedsDB, ...breedsDogApi]
   

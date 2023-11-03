@@ -11,6 +11,7 @@ const initialState = {
 
   dogNameSearch: '',
   temperamentNameSearch: '',
+  originSearch: '',
 
   params: {}
 }

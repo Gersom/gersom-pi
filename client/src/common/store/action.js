@@ -12,7 +12,9 @@ import {
   GET_TEMPERAMENTS,
   PAGE_CHANGE,
   DOG_NAME_CHANGE,
-  TEMPERAMENT_NAME_CHANGE
+  TEMPERAMENT_NAME_CHANGE,
+  ORIGIN_FILTER,
+  RESET_FILTER
 } from "./types"
 
 export const activateLoading = () => {
@@ -30,6 +32,9 @@ export const dogNameChange = (data) => {
 }
 export const temperamentNameChange = (data) => {
   return { type: TEMPERAMENT_NAME_CHANGE, payload: data }
+}
+export const originFilter = (data) => {
+  return { type: ORIGIN_FILTER, payload: data }
 }
 
 export const getDogs = (params) => {
@@ -63,4 +68,8 @@ export const getAllTemperaments = () => {
       console.error(error)
     }
   }
+}
+
+export const resetFilter = () => {
+  return { type: RESET_FILTER}
 }
