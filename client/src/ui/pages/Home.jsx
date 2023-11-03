@@ -9,7 +9,10 @@ import {
   pageChange,
   dogNameChange,
   temperamentNameChange,
-  originFilter
+  originFilter,
+  resetFilter,
+  ascFilter,
+  desFilter
 } from "~common/store/action"
 import Cards from "~components/Cards"
 import Pagination from "~src/ui/components/Pagination"
@@ -21,10 +24,14 @@ const Home = () => {
   const [pageLoading, setpageLoading] = useState(true)
   const [tempValue, setTempValue] = useState('')
   const [originValue, setOriginValue] = useState('')
+  const [orderValue, setOrderValue] = useState('')
   const paramsState = useSelector(
     (state) => state.params
   )
 
+  const allDogsState = useSelector(
+    (state) => state.allDogs
+  )
   const dogsState = useSelector(
     (state) => state.dogs
   )
@@ -73,6 +80,10 @@ const Home = () => {
     setOriginValue(origin)
     dispatch(originFilter(origin))
   }
+  const handleOrder = (event) => {
+    const orderVal = event.target.value
+    setOrderValue(orderVal)
+  }
 
   useEffect(() => {
     dispatch(getDogs(paramsState))
@@ -81,6 +92,15 @@ const Home = () => {
   useEffect(() => {
     setpageLoading(false)
   }, [dogsState])
+  useEffect(() => {
+    if(orderValue == 'asc'){
+      dispatch(ascFilter())
+    } else if (orderValue == 'des') {
+      dispatch(desFilter())
+    } else {
+      dispatch(resetFilter())
+    } 
+  }, [allDogsState, dispatch, orderValue])
 
   useEffect(() => {
     dispatch(getDogs(paramsState))
@@ -98,11 +118,14 @@ const Home = () => {
         ? <p>Page loading...</p> 
         : <div>
           <Filters 
-          tempValue={tempValue}
-          originValue={originValue}
           itemsList={temperamentsState} 
+          tempValue={tempValue}
           onTemperament={handleTemperament}
-          onOrigin={handleOrigin} />
+          originValue={originValue}
+          onOrigin={handleOrigin}
+          orderValue={orderValue}
+          onOrder={handleOrder} 
+          />
 
           <Pagination 
           prevAll={() => handlePage(1)}

@@ -14,7 +14,9 @@ import {
   DOG_NAME_CHANGE,
   TEMPERAMENT_NAME_CHANGE,
   ORIGIN_FILTER,
-  RESET_FILTER
+  RESET_FILTER,
+  ASC_FILTER,
+  DES_FILTER
 } from "./types"
 
 export const activateLoading = () => {
@@ -72,4 +74,11 @@ export const getAllTemperaments = () => {
 
 export const resetFilter = () => {
   return { type: RESET_FILTER}
+}
+
+export const ascFilter = () => {
+  return { type: ASC_FILTER}
+}
+export const desFilter = () => {
+  return { type: DES_FILTER}
 }

@@ -8,7 +8,9 @@ import {
   DOG_NAME_CHANGE,
   TEMPERAMENT_NAME_CHANGE,
   ORIGIN_FILTER,
-  RESET_FILTER
+  RESET_FILTER,
+  ASC_FILTER,
+  DES_FILTER
 } from "./types"
 import initialState from "./state"
 import paramsObject from "./../utils/generateParamsObject"
@@ -16,6 +18,8 @@ import paramsObject from "./../utils/generateParamsObject"
 
 // Reducer
 const reducer = (state= initialState, { type, payload }) => {
+  let orderData 
+
   switch(type) {
     case ACTIVE_LOADING:
       return {
@@ -85,12 +89,40 @@ const reducer = (state= initialState, { type, payload }) => {
         ),
         originSearch: payload
       }
-    
+
     case RESET_FILTER:
       return {
         ...state,
         dogs: state.allDogs
-      }    
+      }   
+    
+    case ASC_FILTER:
+      // eslint-disable-next-line no-case-declarations
+      orderData = [...state.allDogs]
+      return {
+        ...state,
+        dogs: orderData.sort((a, b) => {
+          const nameA = a.name.toUpperCase(); // Convertir a mayúsculas para una comparación sin distinción entre mayúsculas y minúsculas
+          const nameB = b.name.toUpperCase();
+        
+          if (nameA < nameB) return -1
+          if (nameA > nameB) return 1
+          return 0
+        })
+      }
+    case DES_FILTER:
+      orderData = [...state.allDogs]
+      return {
+        ...state,
+        dogs: orderData.sort((a, b) => {
+          const nameA = a.name.toUpperCase(); // Convertir a mayúsculas para una comparación sin distinción entre mayúsculas y minúsculas
+          const nameB = b.name.toUpperCase();
+        
+          if (nameA > nameB) return -1
+          if (nameA < nameB) return 1
+          return 0
+        })
+      }
 
     default:
       return {...state}

@@ -2,8 +2,10 @@ const Filters = ({
   itemsList= [],
   onTemperament= ()=>null,
   onOrigin= ()=>null,
+  onOrder= ()=>null,
   tempValue,
-  originValue
+  originValue,
+  orderValue
 }) => {
   return (
     <div className='c-filters'>
@@ -30,6 +32,19 @@ const Filters = ({
         </option>
         <option value={'dogapi'}>
           The Dog Api
+        </option>
+      </select>
+
+      <span>Ordenar por: </span>
+      <select onChange={onOrder} value={orderValue} name="select">
+        <option value={''}>
+          Ninguno
+        </option>
+        <option value={'asc'}>
+          A - Z
+        </option>
+        <option value={'des'}>
+          Z - A
         </option>
       </select>
     </div>
