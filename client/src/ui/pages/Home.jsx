@@ -3,7 +3,13 @@ import {
   useSelector, 
   useDispatch
 } from "react-redux";
-import {getAllDogs, getNameDogs, searchChange} from "~common/store/action"
+import {
+  getDogs, 
+  getAllTemperaments, 
+  pageChange,
+  dogNameChange,
+  temperamentNameChange
+} from "~common/store/action"
 import Cards from "~components/Cards"
 import Pagination from "~src/ui/components/Pagination"
 import SearchBar from "~src/ui/components/SearchBar"
@@ -12,12 +18,18 @@ import Filters from "~src/ui/components/Filters"
 const Home = () => {
   const dispatch = useDispatch()
   const [pageLoading, setpageLoading] = useState(true)
-  const searchText = useSelector(
-    (state) => state.searchText
+  const [currentValue, setCurrentValue] = useState('')
+  const paramsState = useSelector(
+    (state) => state.params
   )
-  const dogsData = useSelector(
+
+  const dogsState = useSelector(
     (state) => state.dogs
   )
+  const temperamentsState = useSelector(
+    (state) => state.temperaments
+  )
+
   const currentPage = useSelector(
     (state) => state.currentPage
   )
@@ -25,44 +37,50 @@ const Home = () => {
     (state) => state.totalPage
   )
 
-  const handlePage = (page) => {
-    if (page > 1 && page < totalPage) {
+  const handlePage = (newPage) => {
+    if (newPage > 1 && newPage < totalPage) {
       setpageLoading(true)
-      if (searchText === '') dispatch(getAllDogs(page))
-      else dispatch(getNameDogs(searchText, page))
+      dispatch(pageChange(newPage))
     }
     else {
-      if(page === 1 && currentPage !== 1) {
+      if(newPage === 1 && currentPage !== 1) {
         setpageLoading(true)
-        if (searchText === '') dispatch(getAllDogs(page))
-        else dispatch(getNameDogs(searchText, page))
+        dispatch(pageChange(newPage))
       } else {
-        if(page === totalPage && currentPage !== totalPage){
+        if(newPage === totalPage && currentPage !== totalPage){
           setpageLoading(true)
-          if (searchText === '') dispatch(getAllDogs(page))
-          else dispatch(getNameDogs(searchText, page))
+          dispatch(pageChange(newPage))
         }
       }  
     }
   }
 
+  const handleSearch = (value) => {
+    setpageLoading(true)
+    dispatch(dogNameChange(value))
+  }
+
+  const handleTemperament = (event) => {
+    const tempName = event.target.value
+    setpageLoading(true)
+    dispatch(temperamentNameChange(tempName))
+    setCurrentValue(tempName)
+  }
+
   useEffect(() => {
-    dispatch(getAllDogs(currentPage))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    dispatch(getDogs(paramsState))
+  }, [dispatch, paramsState])
 
   useEffect(() => {
     setpageLoading(false)
-  }, [dogsData])
+  }, [dogsState])
 
-  const handleSearch = (text) => {
-    setpageLoading(true)
-    dispatch(searchChange(text))
-    
-    if(text === '') dispatch(getAllDogs(1))
-    else dispatch(getNameDogs(text))
-  }
-
+  useEffect(() => {
+    dispatch(getDogs(paramsState))
+    dispatch(getAllTemperaments())
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  
   return (
     <div className='Home'>
       <SearchBar titleName="Home" 
@@ -72,7 +90,11 @@ const Home = () => {
         pageLoading 
         ? <p>Page loading...</p> 
         : <div>
-          <Filters />
+          <Filters 
+          currentValue={currentValue}
+          itemsList={temperamentsState} 
+          onTemperament={handleTemperament} />
+
           <Pagination 
           prevAll={() => handlePage(1)}
           prev={() => handlePage(currentPage - 1)}
@@ -81,7 +103,8 @@ const Home = () => {
           next={() => handlePage(currentPage + 1)}
           nextAll={() => handlePage(totalPage)}
           />
-          <Cards cards={dogsData} />
+
+          <Cards cards={dogsState} />
         </div>
       }
     </div>

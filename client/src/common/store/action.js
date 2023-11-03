@@ -1,15 +1,18 @@
 import axios from "axios"
 
 import {
-  API_URL_DOGS, API_URL_DOGS_NAME
+  API_URL_DOGS,
+  API_URL_TEMPS
 } from "~common/constants/api"
 
 import { 
   ACTIVE_LOADING,
   DISABLED_LOADING,
-  PAGE_CHANGE,
-  SEARCH_CHANGE,
   GET_DOGS,
+  GET_TEMPERAMENTS,
+  PAGE_CHANGE,
+  DOG_NAME_CHANGE,
+  TEMPERAMENT_NAME_CHANGE
 } from "./types"
 
 export const activateLoading = () => {
@@ -19,20 +22,23 @@ export const disabledLoading = () => {
   return { type: DISABLED_LOADING }
 }
 
-export const pageChange = () => {
-  return { type: PAGE_CHANGE }
+export const pageChange = (data) => {
+  return { type: PAGE_CHANGE, payload: data}
 }
-export const searchChange = (txt) => {
-  return { type: SEARCH_CHANGE, payload: txt }
+export const dogNameChange = (data) => {
+  return { type: DOG_NAME_CHANGE, payload: data }
+}
+export const temperamentNameChange = (data) => {
+  return { type: TEMPERAMENT_NAME_CHANGE, payload: data }
 }
 
-export const getAllDogs = (page= 1) => {
+export const getDogs = (params) => {
   return async (dispatch) => {
     try {
       const { data } = await axios({
         method: 'get',
         url: API_URL_DOGS,
-        params: { page }
+        params
       })
       return dispatch({ type: GET_DOGS, payload: data })
     } 
@@ -42,15 +48,16 @@ export const getAllDogs = (page= 1) => {
   }
 }
 
-export const getNameDogs = (name='', page= 1) => {
+export const getAllTemperaments = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios({
         method: 'get',
-        url: API_URL_DOGS_NAME,
-        params: { search: name, page }
+        url: API_URL_TEMPS
       })
-      return dispatch({ type: GET_DOGS, payload: data })
+      return dispatch({ 
+        type: GET_TEMPERAMENTS, payload: data 
+      })
     } 
     catch (error) {
       console.error(error)

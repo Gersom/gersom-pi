@@ -2,11 +2,14 @@
 import { 
   ACTIVE_LOADING,
   DISABLED_LOADING,
-  PAGE_CHANGE,
-  SEARCH_CHANGE,
   GET_DOGS,
+  GET_TEMPERAMENTS,
+  PAGE_CHANGE,
+  DOG_NAME_CHANGE,
+  TEMPERAMENT_NAME_CHANGE
 } from "./types"
 import initialState from "./state"
+import paramsObject from "./../utils/generateParamsObject"
 
 
 // Reducer
@@ -21,31 +24,55 @@ const reducer = (state= initialState, { type, payload }) => {
         ...state, loading: false
       }
 
-    case PAGE_CHANGE:
-      return {
-        ...state,
-        currentPage: payload
-      }
-
-    case SEARCH_CHANGE:
-        return {
-          ...state,
-          searchText: payload
-        }
-
     case GET_DOGS:
       return { 
         ...state, 
         dogs: payload.results,
+        allDogs: payload.results,
         currentPage: payload?.info?.currentPage,
         totalPage: payload?.info?.pages,
       }
+    case GET_TEMPERAMENTS:
+      return {
+        ...state,
+        temperaments: payload
+      }
 
-    // case ADD_ITEM:
-    //   return {
-    //     ...state,
-    //     items: [...state.items, payload]
-    //   }
+    case PAGE_CHANGE:
+      return {
+        ...state,
+        params: paramsObject(
+          state.dogNameSearch,
+          state.temperamentNameSearch,
+          payload
+        ),
+        currentPage: payload
+      }
+
+    case DOG_NAME_CHANGE:
+      return {
+        ...state,
+        params: paramsObject(
+          payload,
+          state.temperamentNameSearch,
+          state.currentPage
+        ),
+        dogNameSearch: payload
+      }
+    case TEMPERAMENT_NAME_CHANGE:
+      return {
+        ...state,
+        params: paramsObject(
+          state.dogNameSearch,
+          payload,
+          state.currentPage
+        ),
+        temperamentNameSearch: payload
+      }
+
+    
+
+    
 
     default:
       return {...state}
