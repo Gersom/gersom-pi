@@ -1,5 +1,3 @@
-
-
 const { breedsModel, temperamentsModel } = require("../models")
 const getBreedsDogApi = require("../services/theDogAPI/getAllBreeds")
 const getBreedDogApi = require("../services/theDogAPI/getBreed")
@@ -18,17 +16,44 @@ const {
 const formatResponse = require("../utils/formatResponse")
 const filterByTemperament = require("../utils/filterByTemperament")
 
-const getAllDogsController = async (page = 1, tempName) => {
+const getAllDogsController = async ({
+  dogName, temperamentName, page
+}) => {
   let breedsDB
-  let breedsDogApi = await getBreedsDogApi()
-  breedsDB = await getAllBreedsController()
-
+  let breedsDogApi
+  
+  if (dogName === undefined) {
+    breedsDB = await getAllBreedsController()
+    breedsDogApi = await getBreedsDogApi()
+  } else {
+    breedsDB = await breedsModel.findByPartial(
+      'name', dogName.toLowerCase()
+    )
+    breedsDogApi = await getBreedsName(dogName)
+  }
   breedsDB = await normalizeBreedsDB(breedsDB)
-  
-  breedsDogApi = normalizeBreedsDogAPI(breedsDogApi)
-  
+  breedsDogApi = await normalizeBreedsDogAPI(breedsDogApi)
+
   let allBreeds = [...breedsDB, ...breedsDogApi]
-  allBreeds = filterByTemperament(allBreeds, tempName)
+  
+  if(temperamentName !== undefined) {
+    allBreeds = filterByTemperament(allBreeds, temperamentName)
+  }  
+
+  // paginado
+  return formatResponse(allBreeds, page)
+}
+
+const getDogsNameController = async (name, page=1) => {
+  let breedsDB = await breedsModel.findByPartial(
+    'name', name.toLowerCase()
+  )
+  breedsDB = await normalizeBreedsDB(breedsDB)
+
+  let breedsDogApi = await getBreedsName(name)
+  breedsDogApi = normalizeBreedsDogAPI(breedsDogApi)
+
+  const allBreeds = [...breedsDB,...breedsDogApi]
 
   return formatResponse(allBreeds, page)
 }
@@ -49,20 +74,6 @@ const getDogController = async (id) => {
   }
 
   return {}
-}
-
-const getDogsNameController = async (name, page=1) => {
-  let breedsDB = await breedsModel.findByPartial(
-    'name', name.toLowerCase()
-  )
-  breedsDB = await normalizeBreedsDB(breedsDB)
-
-  let breedsDogApi = await getBreedsName(name)
-  breedsDogApi = normalizeBreedsDogAPI(breedsDogApi)
-
-  const allBreeds = [...breedsDB,...breedsDogApi]
-
-  return formatResponse(allBreeds, page)
 }
 
 const postDogController = async (data) => {

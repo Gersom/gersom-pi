@@ -10,26 +10,17 @@ const {
 // READ ITEMS
 const getAllDogs = async (req, res) => {
   try {
+    const dogName = req.query.name
     const temperamentName = req.query.temperament
     let page = parseInt(req.query.page)
     if(!isNaN(page)) page = page < 1 ? 1 : page
     else page = 1
 
-    const dogs = await getAllDogsController(page, temperamentName)
+    const dogs = await getAllDogsController({
+      dogName, temperamentName, page
+    })
     res.status(200).json(dogs)
   }
-  catch (error) {
-    res.status(500).json({error: error.message})
-  }
-}
-
-// DETAIL ITEM
-const getDog = async (req, res) => {
-  try {
-    const { id } = req.params
-    const dog = await getDogController(id)
-    res.status(200).json(dog);
-  } 
   catch (error) {
     res.status(500).json({error: error.message})
   }
@@ -55,6 +46,18 @@ const getDogName = async (req, res) => {
     catch (error) {
       res.status(500).json({error: error.message})
     }
+  }
+}
+
+// DETAIL ITEM
+const getDog = async (req, res) => {
+  try {
+    const { id } = req.params
+    const dog = await getDogController(id)
+    res.status(200).json(dog);
+  } 
+  catch (error) {
+    res.status(500).json({error: error.message})
   }
 }
 
