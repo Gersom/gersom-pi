@@ -7,6 +7,7 @@ import {getAllDogs, getNameDogs, searchChange} from "~common/store/action"
 import Cards from "~components/Cards"
 import Pagination from "~src/ui/components/Pagination"
 import SearchBar from "~src/ui/components/SearchBar"
+import Filters from "~src/ui/components/Filters"
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -71,6 +72,7 @@ const Home = () => {
         pageLoading 
         ? <p>Page loading...</p> 
         : <div>
+          <Filters />
           <Pagination 
           prevAll={() => handlePage(1)}
           prev={() => handlePage(currentPage - 1)}

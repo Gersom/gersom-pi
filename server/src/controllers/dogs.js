@@ -1,8 +1,4 @@
-require('dotenv').config()
 
-const portEnv = process.env.PORT || 3000
-const hostEnv = process.env.HOST || 'http://localhost'
-const urlEnv = `${hostEnv}:${portEnv}`
 
 const { breedsModel, temperamentsModel } = require("../models")
 const getBreedsDogApi = require("../services/theDogAPI/getAllBreeds")
@@ -19,35 +15,22 @@ const {
   getAllBreedsController,
   getBreedController
 } = require("./breeds")
+const formatResponse = require("../utils/formatResponse")
+const filterByTemperament = require("../utils/filterByTemperament")
 
-const getAllDogsController = async (page = 1) => {
-  let breedsDB = await getAllBreedsController()
-  breedsDB = await normalizeBreedsDB(breedsDB)
-
+const getAllDogsController = async (page = 1, tempName) => {
+  let breedsDB
   let breedsDogApi = await getBreedsDogApi()
+  breedsDB = await getAllBreedsController()
+
+  breedsDB = await normalizeBreedsDB(breedsDB)
+  
   breedsDogApi = normalizeBreedsDogAPI(breedsDogApi)
   
-  const allBreeds = [...breedsDB, ...breedsDogApi]
+  let allBreeds = [...breedsDB, ...breedsDogApi]
+  allBreeds = filterByTemperament(allBreeds, tempName)
 
-  const parts = 8
-  const initialIndex = parts * (page-1)
-
-  const pagesTotal = Math.ceil(allBreeds.length / parts)
-  const pageNext = (page+1) <= pagesTotal ? page+1 : null
-  const pagePrev = (page-1) >= 1 ? page-1 : null
-  const urllAll = `${urlEnv}/api/dogs?page=`
-
-  return {
-    info: {
-      currentPage: page,
-      pages: pagesTotal,
-      count: allBreeds.length,
-      next: pageNext ? urllAll+pageNext : null,
-      prev: pagePrev ? urllAll+pagePrev : null,
-      author: 'Gersom'
-   },
-    results: allBreeds.slice(initialIndex, initialIndex+parts)
-  }
+  return formatResponse(allBreeds, page)
 }
 
 const getDogController = async (id) => { 
@@ -79,25 +62,7 @@ const getDogsNameController = async (name, page=1) => {
 
   const allBreeds = [...breedsDB,...breedsDogApi]
 
-  const parts = 8
-  const initialIndex = parts * (page-1)
-
-  const pagesTotal = Math.ceil(allBreeds.length / parts)
-  const pageNext = (page+1) <= pagesTotal ? page+1 : null
-  const pagePrev = (page-1) >= 1 ? page-1 : null
-  const urllAll = `${urlEnv}/api/dogs?page=`
-
-  return {
-    info: {
-      currentPage: page,
-      pages: pagesTotal,
-      count: allBreeds.length,
-      next: pageNext ? urllAll+pageNext : null,
-      prev: pagePrev ? urllAll+pagePrev : null,
-      author: 'Gersom'
-   },
-    results: allBreeds.slice(initialIndex, initialIndex+parts)
-  }
+  return formatResponse(allBreeds, page)
 }
 
 const postDogController = async (data) => {

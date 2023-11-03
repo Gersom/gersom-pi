@@ -1,4 +1,5 @@
 const normalizeBreedDB = (breed) => {
+  if(breed.temperaments.length == 0) return []
   let temperaments = breed.temperaments.map(temp => {
     return temp.name
   })
@@ -14,6 +15,7 @@ const normalizeBreedDB = (breed) => {
 }
 
 const normalizeBreedsDB = (breeds) => {
+  if(breeds.length == 0) return []
   breeds = breeds.map(breed => {
     return normalizeBreedDB(breed.toJSON())
   })
